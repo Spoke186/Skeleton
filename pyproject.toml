@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "voldesk"
+version = "0.1.0"
+description = "Heston calibration to implied volatility surfaces, with identifiability analysis of the inverse problem."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "Esteban Munoz", email = "esteban.munoz@utp.edu.co" }]
+
+[tool.setuptools.packages.find]
+include = ["voldesk*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["**/migrations/*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF", "NPY"]
+ignore = [
+    "E741",   # ambiguous variable names: `l`, `I` are standard notation here (L-curve, Fisher information)
+    "N803",   # argument names follow the mathematical notation of the cited papers
+    "N806",   # ditto for locals: J, W, M, C, D are matrices/functions from the literature
+    "B008",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["N802"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_configs = true
+warn_redundant_casts = true
+no_implicit_optional = true
+# Non-strict by deliberate choice — see CLAUDE.md section 3.
+disallow_untyped_defs = false
+check_untyped_defs = true
+exclude = ["migrations/", "build/"]
+
+[[tool.mypy.overrides]]
+module = "voldesk.apps.*"
+ignore_errors = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "slow: tests that take more than a few seconds (Monte Carlo, calibration)",
+    "gate: the eight Phase 1 acceptance gates from CLAUDE.md section 7",
+    "db: requires a live PostgreSQL connection",
+]
+filterwarnings = ["error::RuntimeWarning"]
+
+[tool.coverage.run]
+branch = true
+source = ["voldesk"]
+omit = ["*/migrations/*", "*/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError"]

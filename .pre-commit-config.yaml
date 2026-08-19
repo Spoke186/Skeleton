@@ -1,0 +1,47 @@
+# Run: pre-commit install
+# This repository is public. The secret-detection hooks below are not optional.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: detect-private-key
+      - id: check-added-large-files
+        args: ["--maxkb=2048"]
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.3
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v2.3.1
+    hooks:
+      - id: mypy
+        files: ^voldesk/
+        additional_dependencies: ["numpy==2.4.6", "types-requests"]
+
+  - repo: local
+    hooks:
+      # CLAUDE.md invariant 4: all figures are produced by voldesk/figures/.
+      - id: no-savefig-outside-figures
+        name: plt.savefig may only appear in voldesk/figures/
+        entry: python scripts/check_savefig.py
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      # Guard against a .env or a raw connection string reaching a public repo.
+      - id: no-committed-env
+        name: refuse to commit .env files
+        entry: bash -c 'git diff --cached --name-only | grep -E "(^|/)\.env($|\.)" | grep -v "\.env\.example$" && { echo "Refusing: a .env file is staged."; exit 1; } || exit 0'
+        language: system
+        pass_filenames: false

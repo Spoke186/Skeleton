@@ -1,0 +1,19 @@
+# Runtime dependencies, pinned. Python 3.12 (see pyproject.toml requires-python).
+# Stack constrained by CLAUDE.md section 3: no Docker, no Celery/Redis, no Prometheus, no SPA.
+
+# --- numerical core -------------------------------------------------------
+numpy==2.4.6
+scipy==1.18.0
+polars==1.43.2
+matplotlib==3.11.0
+
+# --- web / persistence ----------------------------------------------------
+Django==5.2.17
+djangorestframework==3.18.0
+psycopg[binary]==3.3.4
+dj-database-url==3.1.2
+python-dotenv==1.2.3
+gunicorn==26.1.0
+
+# --- error tracking -------------------------------------------------------
+sentry-sdk==2.68.0

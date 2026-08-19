@@ -1,0 +1,6 @@
+# Normalise to LF in the repository. The VPS, the CI runner and the systemd units are
+# all Linux; a CRLF sneaking into a shell script or a unit file breaks it at runtime.
+* text=auto eol=lf
+*.png binary
+*.pdf binary
+*.parquet binary
