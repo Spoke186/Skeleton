@@ -42,7 +42,7 @@ from typing import Final
 
 import numpy as np
 from numpy.typing import NDArray
-from scipy.stats import norm
+from scipy.special import ndtri
 
 from voldesk.quant.model import HestonParams, MarketState
 from voldesk.quant.pricing.blackscholes import OptionType
@@ -250,8 +250,8 @@ def simulate_paths(
         else:
             u_v, u_s = u_v_base, u_s_base
 
-        z_v = norm.ppf(np.clip(u_v, 1e-16, 1.0 - 1e-16))
-        z_s = norm.ppf(np.clip(u_s, 1e-16, 1.0 - 1e-16))
+        z_v = ndtri(np.clip(u_v, 1e-16, 1.0 - 1e-16))
+        z_s = ndtri(np.clip(u_s, 1e-16, 1.0 - 1e-16))
 
         v_next, a_or_p, b2_or_beta, use_quadratic = _qe_variance_step(v, z_v, u_v, params, dt)
         k0 = _martingale_k0(v, a_or_p, b2_or_beta, use_quadratic, k1, k2, k3, k4)
