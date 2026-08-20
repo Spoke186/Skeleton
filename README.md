@@ -8,8 +8,9 @@ the measurement of *which parameter combinations option data actually determines
 it does not, and how Tikhonov regularisation trades fit against parameter stability —
 validated against synthetic ground truth where the true parameters are known.
 
-Build status: **Phase 0 complete.** This README is filled in as the phases land; see
-`PROJECT_PLAN.md` for what each phase contains.
+Build status: **Phases 0 and 1 complete, Phase 2 in progress.** See `docs/STATUS.md`
+for what has actually been verified and what has not, and `PROJECT_PLAN.md` for what each
+phase contains.
 
 ## Scope, stated plainly
 
@@ -38,4 +39,5 @@ pytest
 | `CLAUDE.md` | Invariants, mathematical conventions, banned dependencies |
 | `PROJECT_PLAN.md` | Phase breakdown with acceptance criteria |
 | `ARCHITECTURE.md` | Data and control flow, layering rule |
+| `docs/STATUS.md` | Phase state, measured results, and what is not yet verified |
 | `docs/adr/` | Why the numbers and the departures are what they are |
